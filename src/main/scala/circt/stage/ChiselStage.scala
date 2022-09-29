@@ -50,7 +50,7 @@ class ChiselStage extends Stage {
 object ChiselStage {
 
   /** Elaborate a Chisel circuit into a CHIRRTL string */
-  def emitCHIRRTL(gen: => RawModule): String = chisel3.stage.ChiselStage.emitChirrtl(gen)
+  def emitCHIRRTL(gen: => Module): String = chisel3.stage.ChiselStage.emitChirrtl(gen)
 
   /** A phase shared by all the CIRCT backends */
   private def phase = new PhaseManager(
@@ -66,7 +66,7 @@ object ChiselStage {
   )
 
   /** Compile a Chisel circuit to FIRRTL dialect */
-  def emitFIRRTLDialect(gen: => RawModule): String = phase
+  def emitFIRRTLDialect(gen: => Module): String = phase
     .transform(
       Seq(
         ChiselGeneratorAnnotation(() => gen),
@@ -80,7 +80,7 @@ object ChiselStage {
     .get
 
   /** Compile a Chisel circuit to HWS dialect */
-  def emitHWDialect(gen: => RawModule): String = phase
+  def emitHWDialect(gen: => Module): String = phase
     .transform(
       Seq(
         ChiselGeneratorAnnotation(() => gen),
@@ -94,7 +94,7 @@ object ChiselStage {
     .get
 
   /** Compile a Chisel circuit to SystemVerilog */
-  def emitSystemVerilog(gen: => RawModule): String = phase
+  def emitSystemVerilog(gen: => Module): String = phase
     .transform(
       Seq(
         ChiselGeneratorAnnotation(() => gen),
