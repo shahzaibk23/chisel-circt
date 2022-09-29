@@ -1,5 +1,3 @@
-import Dependencies._
-
 ThisBuild / scalaVersion         := "2.12.15"
 ThisBuild / crossScalaVersions   := Seq("2.13.6", scalaVersion.value)
 ThisBuild / organization         := "com.sifive"
@@ -20,7 +18,7 @@ ThisBuild / developers           := List(
 lazy val root = (project in file("."))
   .settings(
     name := "chisel-circt",
-    libraryDependencies += scalaTest % Test,
-    libraryDependencies += chisel3,
-    addCompilerPlugin(chiselCompilerPlugin cross CrossVersion.full)
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.7" % Test,
+    libraryDependencies += "edu.berkeley.cs" %% "chisel3" % "3.5.0",
+    addCompilerPlugin("edu.berkeley.cs" %% "chisel3-plugin" % "3.5.0" cross CrossVersion.full)
   )
