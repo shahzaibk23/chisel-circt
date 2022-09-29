@@ -2,7 +2,7 @@
 
 package circt.stage
 
-import chisel3.RawModule
+import chisel3.BaseModule
 import chisel3.stage.{ChiselGeneratorAnnotation, NoRunFirrtlCompilerAnnotation}
 
 import firrtl.{AnnotationSeq, EmittedVerilogCircuitAnnotation}
@@ -50,7 +50,7 @@ class ChiselStage extends Stage {
 object ChiselStage {
 
   /** Elaborate a Chisel circuit into a CHIRRTL string */
-  def emitCHIRRTL(gen: => Module): String = chisel3.stage.ChiselStage.emitChirrtl(gen)
+  def emitCHIRRTL(gen: => BaseModule): String = chisel3.stage.ChiselStage.emitChirrtl(gen)
 
   /** A phase shared by all the CIRCT backends */
   private def phase = new PhaseManager(
@@ -66,7 +66,7 @@ object ChiselStage {
   )
 
   /** Compile a Chisel circuit to FIRRTL dialect */
-  def emitFIRRTLDialect(gen: => Module): String = phase
+  def emitFIRRTLDialect(gen: => BaseModule): String = phase
     .transform(
       Seq(
         ChiselGeneratorAnnotation(() => gen),
@@ -80,7 +80,7 @@ object ChiselStage {
     .get
 
   /** Compile a Chisel circuit to HWS dialect */
-  def emitHWDialect(gen: => Module): String = phase
+  def emitHWDialect(gen: => BaseModule): String = phase
     .transform(
       Seq(
         ChiselGeneratorAnnotation(() => gen),
@@ -94,7 +94,7 @@ object ChiselStage {
     .get
 
   /** Compile a Chisel circuit to SystemVerilog */
-  def emitSystemVerilog(gen: => Module): String = phase
+  def emitSystemVerilog(gen: => BaseModule): String = phase
     .transform(
       Seq(
         ChiselGeneratorAnnotation(() => gen),
